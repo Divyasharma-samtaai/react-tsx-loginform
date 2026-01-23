@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Login.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface Errors {
   username?: string;
@@ -9,11 +10,12 @@ interface Errors {
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [errors, setErrors] = useState<Errors>({});
   const [formError, setFormError] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newErrors: Errors = {};
@@ -41,13 +43,39 @@ const Login = () => {
     // Stop submit if errors exist
     if (Object.keys(newErrors).length > 0) return;
 
-    alert("Login successful");
+    //API CALL
+    try {
+      const response = await fetch("https://dummyjson.com/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
 
-    // Clear form fields
-    setUsername("");
-    setPassword("");
-    setErrors({});
-    setFormError("");
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Backend-level error (wrong credentials)
+        setFormError(data.message || "Login failed");
+        return;
+      }
+
+      console.log("Login success:", data);
+
+      alert("Login successful");
+
+      // Clear form fields
+      setUsername("");
+      setPassword("");
+      setErrors({});
+      setFormError("");
+    } catch (error) {
+      setFormError("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -80,21 +108,35 @@ const Login = () => {
         </label>
 
         {/* Password */}
-        <input
-          id="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setPassword(e.target.value);
-            setErrors((prev) => ({ ...prev, password: undefined }));
-            setFormError("");
-          }}
-          className={errors.password ? "error-input" : ""}
-        />
+        <div className="password-container">
+          <input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            autoComplete="current-password"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value);
+              setErrors((prev) => ({ ...prev, password: undefined }));
+              setFormError("");
+            }}
+            className={errors.password ? "error-input" : ""}
+          />
+
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword((prev) => !prev)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
         {errors.password && <p className="error-text">{errors.password}</p>}
 
-        <button type="submit">Login</button>
+        <button type="submit" className="submitbtn">
+          Login
+        </button>
       </form>
     </div>
   );

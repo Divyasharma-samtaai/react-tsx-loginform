@@ -33,6 +33,7 @@
   border-radius: 5px;
   font-size: 14px;
   outline: none;
+  box-sizing: border-box;
 }
 
 /* Input focus */
@@ -61,7 +62,18 @@
 }
 
 /* Button */
-.login-form button {
+/* .login-form button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+} */
+.login-form button:not(.password-toggle) {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
@@ -74,8 +86,8 @@
 }
 
 /* Button hover */
-.login-form button:hover {
-  background-color: #4338ca;
+.login-form .submitbtn:hover {
+  background-color: #2816ed;
 }
 
 /* Labels */
@@ -85,4 +97,43 @@
   font-size: 14px;
   font-weight: 500;
   color: #374151;
+}
+
+/* Labels */
+.login-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 45px; /* space for eye */
+  height: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 18px;
+  color: #6b6b6b;
+  line-height: 1;
+}
+
+/* prevent button styles leaking */
+.password-toggle:focus {
+  outline: none;
 }
