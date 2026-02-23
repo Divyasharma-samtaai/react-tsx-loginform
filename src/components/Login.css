@@ -33,6 +33,7 @@
   border-radius: 5px;
   font-size: 14px;
   outline: none;
+  box-sizing: border-box;
 }
 
 /* Input focus */
@@ -40,19 +41,19 @@
   border-color: #6366f1;
 }
 
-/* 🔴 Red border for invalid fields */
+/*  Red border for invalid fields */
 .error-input {
   border-color: #ef4444;
 }
 
-/* 🔴 Individual field error text */
+/*  Individual field error text */
 .error-text {
   font-size: 12px;
   color: #ef4444;
   margin-bottom: 10px;
 }
 
-/* 🔴 Form-level error (top message) */
+/*  Form-level error (top message) */
 .form-error {
   color: #ef4444;
   font-size: 14px;
@@ -60,8 +61,7 @@
   margin-bottom: 12px;
 }
 
-/* Button */
-.login-form button {
+.login-form button:not(.password-toggle) {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
@@ -74,8 +74,8 @@
 }
 
 /* Button hover */
-.login-form button:hover {
-  background-color: #4338ca;
+.login-form .submitbtn:hover {
+  background-color: #2816ed;
 }
 
 /* Labels */
@@ -85,4 +85,43 @@
   font-size: 14px;
   font-weight: 500;
   color: #374151;
+}
+
+/* Labels */
+.login-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 45px; /* space for eye */
+  height: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 18px;
+  color: #6b6b6b;
+  line-height: 1;
+}
+
+/* prevent button styles leaking */
+.password-toggle:focus {
+  outline: none;
 }
